@@ -12,9 +12,11 @@ UserNumber <- readline(prompt = "Input a three digit number: ")
 #'          Write an error message
 
 if ((as.numeric(UserNumber))>0 & (nchar(UserNumber))==3){
+  # determine if the User Input is a positive number of 3 digits
   UserNumber <- as.numeric(UserNumber)
   print(paste("You entered", UserNumber)) # determine if the input value is a 3 digit positive number
 } else if (is.na(as.numeric(UserNumber))){
+  # determine if the User Input is a secret NA
   print("Please enter a number instead of an NA") # determine if the input is an NA
 } else {
   print("You did not input a three digit positive number") # if it is a non-three digit number, tell them to reinput the number
