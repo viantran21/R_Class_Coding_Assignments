@@ -13,7 +13,6 @@ UserNumber <- readline(prompt = "Input a three digit number: ")
 
 if ((as.numeric(UserNumber))>0 & (nchar(UserNumber))==3){
   # determine if the User Input is a positive number of 3 digits
-  UserNumber <- as.numeric(UserNumber)
   print(paste("You entered", UserNumber)) # determine if the input value is a 3 digit positive number
 } else if (is.na(as.numeric(UserNumber))){
   # determine if the User Input is a secret NA
@@ -26,7 +25,7 @@ if ((as.numeric(UserNumber))>0 & (nchar(UserNumber))==3){
 #'    number, is a number that is equal to the sum of the cubes of its own digits. 
 #'    153, 370, 371, 407 are three digit Armstrong numbers.
 #' plan: 
-#'      Break up the number
+#'      Break up the number, which must originally be left as a string
 #'      Check if the number is an Armstrong number
 
 #' 4. Display the result with an appropriate message, e.g. 
@@ -36,3 +35,8 @@ if ((as.numeric(UserNumber))>0 & (nchar(UserNumber))==3){
 #'      Use the print and paste function to display the message
 #'      Include a function to restart the program or press a key to escape
 
+Fragment <- as.numeric(strsplit(UserNumber,"")[[1]])
+if (UserNumber == sum(Fragment^3)){
+  print(paste(UserNumber,"is an Armstrong Number"))
+}else{
+  print(paste(UserNumber,"is not an Armstrong Number"))}
