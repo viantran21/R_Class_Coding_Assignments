@@ -16,7 +16,7 @@ if ((as.numeric(UserNumber))>0 & (nchar(UserNumber))==3){
   print(paste("You entered", UserNumber)) # determine if the input value is a 3 digit positive number
 } else if (is.na(as.numeric(UserNumber))){
   # determine if the User Input is a secret NA
-  print("Please enter a number instead of an NA") # determine if the input is an NA
+  print("Please enter a number instead of letters") # determine if the input is an NA
 } else {
   print("You did not input a three digit positive number") # if it is a non-three digit number, tell them to reinput the number
 } # 
@@ -35,6 +35,7 @@ if ((as.numeric(UserNumber))>0 & (nchar(UserNumber))==3){
 #'      Use the print and paste function to display the message
 #'      Include a function to restart the program or press a key to escape
 
+#' The following code checks if the number is narcissistic (#3) and then displays the result
 Fragment <- as.numeric(strsplit(UserNumber,"")[[1]])
 if (UserNumber == sum(Fragment^3)){
   print(paste(UserNumber,"is an Armstrong Number"))
