@@ -64,13 +64,16 @@ while (Jigsaw=="YES") { #setup the while loop (1) that will circulate the user f
     SecretWordList <- read.delim("Hangman_Words.txt") #read the list of words
     GuessWord <- "▯"
     SecretWord <- SecretWordList[sample(nrow(SecretWordList), 1), ]
+    SecretWord <- tolower(SecretWord)
     GuessWord <- paste(replicate(nchar(SecretWord), "▯"), collapse = "")# create a character that will serve as a representation of the secret word to the user, and will store their guesses
     WrongGuess <- ""
     
     while (lives > 0 & SecretWord != GuessWord){ #while loop (2) that is the main game, where the user circulates until they guess the word or die
         #cat("\014") 
+        print("")
         print(paste("The secret word is", nchar(SecretWord), "letters long: ", GuessWord,"You have already guessed",WrongGuess))
         GuessLetter <- readline("Take a guess as to the secret word, or just guess a letter: ")
+        GuessLetter <- tolower(GuessLetter)
         
         if (nchar(GuessLetter)>1){ #if they are attempting to guess the whole word
           if (GuessLetter == SecretWord){ #did they get it right and guess the whole word
@@ -88,43 +91,137 @@ while (Jigsaw=="YES") { #setup the while loop (1) that will circulate the user f
           WrongGuess <- paste(WrongGuess,GuessLetter)
         }
         }
+        
+        #Artwork
+        if (lives==6){
+          cat("
+    ---------
+    |       |
+    |       |
+            |
+            |
+            |
+            |
+            |
+            |
+            |
+            |
+            |
+           ---")
+        } else if (lives==5){
+          cat("
+    ---------
+    |       |
+    |       |
+  {0 0}     |
+    &       |
+            |
+            |
+            |
+            |
+            |
+            |
+            |
+           ---")
+        } else if (lives==4){
+          cat("
+    ---------
+    |       |
+    |       |
+  {0 0}     |
+    &       |
+   | |      |
+   | |      |
+            |
+            |
+            |
+            |
+            |
+           ---")
+        } else if (lives==3){
+          cat("
+    ---------
+    |       |
+    |       |
+  {0 0}     |
+    &       |
+  /| |      |
+ / | |      |
+            |
+            |
+            |
+            |
+            |
+           ---")
+        } else if (lives==2){
+          cat("
+    ---------
+    |       |
+    |       |
+  {0 0}     |
+    &       |
+  /| |\\     |
+ / | | \\    |
+            |
+            |
+            |
+            |
+            |
+           ---")
+        } else if (lives==1){
+          cat("
+    ---------
+    |       |
+    |       |
+  {0 0}     |
+    &       |
+  /| |\\     |
+ / | | \\    |
+   <=>      |
+   |        |
+   |        |
+   ^        |
+            |
+           ---")
+        }
+        
     } # while loop (2)
+    if (SecretWord==GuessWord){
+      print(paste("Congratulations! You guessed the word", SecretWord,"!"))
+      cat("
+    ---------
+    |       |
+    |       |
+    &       |
+            |
+ \\{0 0}/    |
+  \\ | /     |
+   | |      |
+   | |      |
+   <=>      |
+   | |      |
+   | |      |
+   ^ ^     ---")
+    } else{
+      print(paste("Sorry, you could not figure out the secret word. It was", SecretWord))
+      cat("
+    ---------
+    |       |
+    |       |
+  {X X}     |
+    &       |
+  /| |\\     |
+ / | | \\    |
+   <=>      |
+   | |      |
+   | |      |
+   ^ ^      |
+            |
+           ---")
+    }
     
   } else { #if statement for if the user wants to play the game
     print("Alright, nevermind then...")
   }
 } # while loop (1)
-print("Done")
 
-# # ARTWORK
-# # dead hangman
-# cat("
-#     ---------
-#     |       |
-#     |       |
-#   {X X}     |
-#     &       |
-#   /| |\\     |
-#  / | | \\    |
-#    <=>      |
-#    | |      |
-#    | |      |
-#    ^ ^      |
-#             |
-#            ---")
-# 
-# # alive man
-# cat("
-#     ---------
-#     |       |
-#     |       |
-#     &       |
-#             |
-#  \\{0 0}/    |
-#   \\ | /     |
-#    | |      |
-#    | |      |
-#    <=>      |
-#    | |      |
-#    | |      |
-#    ^ ^     ---")
