@@ -52,3 +52,48 @@
 #' 
 #' If the user guessed the word then congratulate them
 #' Else hang the man
+Jigsaw <- "Y"
+while (Jigsaw=="Y") {
+  Jigsaw <- readline(prompt = "Would you like to play a game?\nPress Y is so, press anythis else if not.")
+  if (Jigsaw=="Y"){
+    lives <- 6
+    SecretWordList <- read.delim("Hangman_Words.txt")
+    SecretWord <- SecretWordList[sample(nrow(SecretWordList), 1), ]
+  } else {
+    print("Alright, nevermind then...")
+  }
+}
+print("Done")
+
+# # ARTWORK
+# # dead hangman
+# cat("
+#     ---------
+#     |       |
+#     |       |
+#   {X X}     |
+#     &       |
+#   /| |\\     |
+#  / | | \\    |
+#    <=>      |
+#    | |      |
+#    | |      |
+#    ^ ^      |
+#             |
+#            ---")
+# 
+# # alive man
+# cat("
+#     ---------
+#     |       |
+#     |       |
+#     &       |
+#             |
+#  \\{0 0}/    |
+#   \\ | /     |
+#    | |      |
+#    | |      |
+#    <=>      |
+#    | |      |
+#    | |      |
+#    ^ ^     ---")
