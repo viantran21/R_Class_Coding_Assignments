@@ -52,17 +52,42 @@
 #' 
 #' If the user guessed the word then congratulate them
 #' Else hang the man
-Jigsaw <- "Y"
-while (Jigsaw=="Y") {
-  Jigsaw <- readline(prompt = "Would you like to play a game?\nPress Y is so, press anythis else if not.")
-  if (Jigsaw=="Y"){
-    lives <- 6
-    SecretWordList <- read.delim("Hangman_Words.txt")
+Jigsaw <- "Y" #initialize the value of Jigsaw when going into teh while loop
+library(stringi) #load the stringi package for usage in replacing letters
+
+while (Jigsaw=="Y") { #setup the while loop (1) that will circulate the user for as long as they want to play
+  Jigsaw <- readline(prompt = "Would you like to play a game?\nPress Y is so, press anythis else if not.") #see if the user actually wants to play
+  if (Jigsaw=="Y"){ #if the user wants to play then...
+    lives <- 6 #setup how many lives they have
+    SecretWordList <- read.delim("Hangman_Words.txt") #read the list of words
+    GuessWord <- "▯"
     SecretWord <- SecretWordList[sample(nrow(SecretWordList), 1), ]
-  } else {
+    GuessWord <- paste(replicate(nchar(SecretWord), "▯"), collapse = "")# create a character that will serve as a representation of the secret word to the user, and will store their guesses
+    
+    while (lives > 0 & SecretWord != GuessWord){ #while loop (2) that is the main game, where the user circulates until they guess the word or die
+        print(paste("The secret word is", nchar(SecretWord), "letters long\n", GuessWord))
+        GuessLetter <- readline("Take a guess as to the secret word, or just guess a letter: ")
+        
+        if (nchar(GuessLetter)>1){ #if they are attempting to guess the whole word
+          if (GuessLetter == SecretWord){ #did they get it right and guess the whole word
+            GuessWord <- SecretWord #if the user guessed the word, then update GuessWord
+        }else{ #if they failed to guess the whole word
+          lives <- lives-1
+        }
+        } else{ #if they are just trying one letter at a time
+        LetterPosition <- unlist(gregexpr(GuessLetter, SecretWord)) #determine what the position of the letter is in SecretWord, if it is there at all
+        if (LetterPosition>0){ #if the letter is actually part of the word then change GuessLetter
+        stri_sub_all(GuessWord, from = LetterPosition, length = 1) <- GuessLetter
+        } else{ #otherwise you lose lives. The user is sent into this "else" if LetterPosition = -1, which is a possible value if the letter is not in SecretWord
+          lives <- lives-1
+        }
+        }
+    } # while loop (2)
+    
+  } else { #if statement for if the user wants to play the game
     print("Alright, nevermind then...")
   }
-}
+} # while loop (1)
 print("Done")
 
 # # ARTWORK
