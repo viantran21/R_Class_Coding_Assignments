@@ -56,6 +56,7 @@
 
 # TO THE USER: DOWNLOAD THE "stringi" PACKAGES IF YOU DO NOT ALREADY HAVE IT
 # install.packages("stringi") #load the stringi package for usage in replacing letters
+# Ensure that "Hangman_Words.txt" is downloaded to the working directory
 
 Jigsaw <- "YES" #initialize the value of Jigsaw when going into the while loop
 
@@ -65,11 +66,11 @@ while (Jigsaw=="YES") { #setup the while loop (1) that will circulate the user f
     print("Welcome to Hangman. You have 6 lives to try and guess a word. Good luck!")
     lives <- 6 #setup how many lives they have
     SecretWordList <- read.delim("Hangman_Words.txt") #read the list of words
-    GuessWord <- "▯"
-    SecretWord <- SecretWordList[sample(nrow(SecretWordList), 1), ]
-    SecretWord <- tolower(SecretWord)
+    GuessWord <- "▯" #spreet the value of guessword so that it can be used in the conditional while loop
+    SecretWord <- SecretWordList[sample(nrow(SecretWordList), 1), ] #randomly select a word from the secret list
+    SecretWord <- tolower(SecretWord) #set the word to lowercase
     GuessWord <- paste(replicate(nchar(SecretWord), "▯"), collapse = "")# create a character that will serve as a representation of the secret word to the user, and will store their guesses
-    WrongGuess <- ""
+    WrongGuess <- "" #preset the wrong guess so that it can be added to in the running list of wrong guesses
     
     while (lives > 0 & SecretWord != GuessWord){ #while loop (2) that is the main game, where the user circulates until they guess the word or die
         #cat("\014") 
@@ -80,13 +81,13 @@ while (Jigsaw=="YES") { #setup the while loop (1) that will circulate the user f
           print("Please enter a letter")
           lives <- lives + 1 #increase the user's lives to counteract the fact that a number will cost them a life. This means that the code doesn't penalize typing in non-letters
         }
-        GuessLetter <- tolower(GuessLetter)
+        GuessLetter <- tolower(GuessLetter) #set the guessed letter to lowercase to prevent mismatch due to the user simply holding down the shift key
         
         if (nchar(GuessLetter)>1){ #if they are attempting to guess the whole word
           if (GuessLetter == SecretWord){ #did they get it right and guess the whole word
             GuessWord <- SecretWord #if the user guessed the word, then update GuessWord
         }else{ #if they failed to guess the whole word
-          lives <- lives-1
+          lives <- lives-1 #since the user failed, remove a life
         }
         } else{ #if they are just trying one letter at a time
         LetterPosition <- unlist(gregexpr(GuessLetter, SecretWord)) #determine what the position of the letter is in SecretWord, if it is there at all
@@ -95,11 +96,11 @@ while (Jigsaw=="YES") { #setup the while loop (1) that will circulate the user f
         } else{ #otherwise you lose lives. The user is sent into this "else" if LetterPosition = -1, which is a possible value if the letter is not in SecretWord
           lives <- lives-1
           print("Wrong guess")
-          WrongGuess <- paste(WrongGuess,GuessLetter)
+          WrongGuess <- paste(WrongGuess,GuessLetter) #add the wrong guess to the running list of wrong guesses
         }
         }
         
-        #Artwork
+        #Artwork to be displayed depending on the lives
         if (lives==6){
           cat("
     ---------
