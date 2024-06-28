@@ -1,4 +1,4 @@
-# Assignment 3 - Hangman
+# Assignment 3 - Hangman 🦖
 # Taran Bhartt
 
 # Prepare a dictionary of words to choose from and save it in a txt file (one column) and save it in the project directory
@@ -52,14 +52,17 @@
 #' 
 #' If the user guessed the word then congratulate them
 #' Else hang the man
-Jigsaw <- "YES" #initialize the value of Jigsaw when going into the while loop
+
 
 # TO THE USER: DOWNLOAD THE "stringi" PACKAGES IF YOU DO NOT ALREADY HAVE IT
 # install.packages("stringi") #load the stringi package for usage in replacing letters
 
+Jigsaw <- "YES" #initialize the value of Jigsaw when going into the while loop
+
 while (Jigsaw=="YES") { #setup the while loop (1) that will circulate the user for as long as they want to play
-  Jigsaw <- readline(prompt = "Would you like to play a game?\nEnter YES is so, press anythis else if not.") #see if the user actually wants to play
+  Jigsaw <- readline(prompt = "Would you like to play a game?\nEnter YES is so, press anything else if not.") #see if the user actually wants to play
   if (Jigsaw=="YES"){ #if the user wants to play then...
+    print("Welcome to Hangman. You have 6 lives to try and guess a word. Good luck!")
     lives <- 6 #setup how many lives they have
     SecretWordList <- read.delim("Hangman_Words.txt") #read the list of words
     GuessWord <- "▯"
@@ -73,6 +76,10 @@ while (Jigsaw=="YES") { #setup the while loop (1) that will circulate the user f
         print("")
         print(paste("The secret word is", nchar(SecretWord), "letters long: ", GuessWord,"You have already guessed",WrongGuess))
         GuessLetter <- readline("Take a guess as to the secret word, or just guess a letter: ")
+        if (!grepl("[A-Za-z]", GuessLetter)){ #make sure that the user is inputting a letter
+          print("Please enter a letter")
+          lives <- lives + 1 #increase the user's lives to counteract the fact that a number will cost them a life. This means that the code doesn't penalize typing in non-letters
+        }
         GuessLetter <- tolower(GuessLetter)
         
         if (nchar(GuessLetter)>1){ #if they are attempting to guess the whole word
@@ -83,7 +90,7 @@ while (Jigsaw=="YES") { #setup the while loop (1) that will circulate the user f
         }
         } else{ #if they are just trying one letter at a time
         LetterPosition <- unlist(gregexpr(GuessLetter, SecretWord)) #determine what the position of the letter is in SecretWord, if it is there at all
-        if (LetterPosition>0){ #if the letter is actually part of the word then change GuessLetter
+        if (LetterPosition[1]>0){ #if the letter is actually part of the word then change GuessLetter
           stringi::stri_sub_all(GuessWord, from = LetterPosition, length = 1) <- GuessLetter
         } else{ #otherwise you lose lives. The user is sent into this "else" if LetterPosition = -1, which is a possible value if the letter is not in SecretWord
           lives <- lives-1
