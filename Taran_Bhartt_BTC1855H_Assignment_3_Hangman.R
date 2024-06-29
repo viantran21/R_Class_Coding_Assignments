@@ -62,6 +62,10 @@
 # load the stringi package for usage in replacing letters
 
 # Ensure that "Hangman_Words.txt" is downloaded to the working directory
+
+# Also, for best display when playing, maximize the console window, and do not
+# look at the environment as the Secret Word will be listed
+# But not for marking/code review, obviously
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 
@@ -85,7 +89,9 @@ while (Jigsaw=="yes") { #setup the while loop (1) that will circulate the user f
         #cat("\014") 
         print("") #add a space to make it easier to read the text
         print(paste("The secret word is", nchar(SecretWord), "letters long: ", GuessWord))
-        print(paste("You have already guessed",WrongGuess))
+        if (WrongGuess != ''){ #wait until they've made a wrong guess to tell them about their wrong guesses
+            print(paste("You have already guessed",WrongGuess))
+        }
         print(paste("You have",lives,"lives left"))
         GuessLetter <- readline("Take a guess as to the secret word, or just guess a letter: ")
         GuessLetter <- tolower(GuessLetter) #set the guessed letter to lowercase to prevent mismatch due to the user simply holding down the shift key
@@ -102,9 +108,11 @@ while (Jigsaw=="yes") { #setup the while loop (1) that will circulate the user f
               }
         } else{ #if they are just trying one letter at a time
               LetterPosition <- unlist(gregexpr(GuessLetter, SecretWord)) #determine what the position of the letter is in SecretWord, if it is there at all
-        if (LetterPosition[1]>0){ #if the letter is actually part of the word then change GuessLetter
-              stringi::stri_sub_all(GuessWord, from = LetterPosition, length = 1) <- GuessLetter
-        } else{ #otherwise you lose lives. The user is sent into this "else" if LetterPosition = -1, which is a possible value if the letter is not in SecretWord
+              if (LetterPosition[1]>0){ #if the letter is actually part of the word then change GuessLetter
+                    stringi::stri_sub_all(GuessWord, from = LetterPosition, length = 1) <- GuessLetter #replace the blank rectangles in the GuessWord with their corresponding letter that the user just correctly guessed
+              } else if(grepl(GuessLetter,WrongGuess)){ #is the user repeatedly trying the same letter?
+                    print(paste("You already guessed",GuessLetter,", try a different letter"))
+              } else { #otherwise you lose lives. The user is sent into this "else" if LetterPosition = -1, which is a possible value if the letter is not in SecretWord
               lives <- lives-1
               print("Wrong guess")
               WrongGuess <- paste(WrongGuess,GuessLetter) #add the wrong guess to the running list of wrong guesses
@@ -221,6 +229,8 @@ while (Jigsaw=="yes") { #setup the while loop (1) that will circulate the user f
    | |      |
    | |      |
    ^ ^     ---")
+      print("If you'd like to learn more about this dinosaur, visit")
+      print(paste("https://www.nhm.ac.uk/discover/dino-directory/", SecretWord, ".html", sep=""))
     } else{
       print(paste("Sorry, you could not figure out the secret word. It was", SecretWord))
       cat("
@@ -237,7 +247,9 @@ while (Jigsaw=="yes") { #setup the while loop (1) that will circulate the user f
    ^ ^      |
             |
            ---")
-    }
+      print("If you'd like to learn more about this dinosaur, visit")
+      print(paste("https://www.nhm.ac.uk/discover/dino-directory/", SecretWord, ".html", sep=""))
+      }
     
   } else { #if statement for if the user wants to play the game
     print("Alright, nevermind then...")
