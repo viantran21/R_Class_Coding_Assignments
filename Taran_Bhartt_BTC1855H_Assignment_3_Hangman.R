@@ -86,6 +86,7 @@ while (Jigsaw=="yes") { #setup the while loop (1) that will circulate the user f
         print("") #add a space to make it easier to read the text
         print(paste("The secret word is", nchar(SecretWord), "letters long: ", GuessWord))
         print(paste("You have already guessed",WrongGuess))
+        print(paste("You have",lives,"lives left"))
         GuessLetter <- readline("Take a guess as to the secret word, or just guess a letter: ")
         GuessLetter <- tolower(GuessLetter) #set the guessed letter to lowercase to prevent mismatch due to the user simply holding down the shift key
         
