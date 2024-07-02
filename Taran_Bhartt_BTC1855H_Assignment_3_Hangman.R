@@ -86,7 +86,6 @@ while (Jigsaw=="yes") { #setup the while loop (1) that will circulate the user f
     WrongGuess <- "" #preset the wrong guess so that it can be added to in the running list of wrong guesses
     
     while (lives > 0 & SecretWord != GuessWord){ #while loop (2) that is the main game, where the user circulates until they guess the word or die
-        #cat("\014") 
         print("") #add a space to make it easier to read the text
         print(paste("The secret word is", nchar(SecretWord), "letters long: ", GuessWord))
         if (WrongGuess != ''){ #wait until they've made a wrong guess to tell them about their wrong guesses
@@ -119,6 +118,7 @@ while (Jigsaw=="yes") { #setup the while loop (1) that will circulate the user f
         }
         }
         
+        cat("\014") 
         #Artwork to be displayed depending on the lives
         if (lives==6){
           cat("
@@ -214,6 +214,8 @@ while (Jigsaw=="yes") { #setup the while loop (1) that will circulate the user f
         
     } # while loop (2)
     if (SecretWord==GuessWord){
+      cat("\014") 
+      
       print(paste("Congratulations! You guessed the word", SecretWord,"!"))
       cat("
     ---------
@@ -232,6 +234,8 @@ while (Jigsaw=="yes") { #setup the while loop (1) that will circulate the user f
       print("If you'd like to learn more about this dinosaur, visit")
       print(paste("https://www.nhm.ac.uk/discover/dino-directory/", SecretWord, ".html", sep=""))
     } else{
+      cat("\014") 
+      
       print(paste("Sorry, you could not figure out the secret word. It was", SecretWord))
       cat("
     ---------
