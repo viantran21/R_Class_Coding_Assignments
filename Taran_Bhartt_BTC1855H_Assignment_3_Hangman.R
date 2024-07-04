@@ -1,6 +1,10 @@
 # Assignment 3 - Hangman 🦖
 # Taran Bhartt
+##Reviewed by Vian Tran
+##I will represent my comments using a double hashtag (##)! 
 
+## I think it would be helpful for people not familiar with this code or the assignment that you put a subtitle for lines 8 to 37 (ie. Assignment Details)
+##so they don't get this section confused with your gameplan for this assignment
 # Prepare a dictionary of words to choose from and save it in a txt file (one column) and save it in the project directory
 # Read the word list from your program.
 
@@ -32,7 +36,7 @@
 # 
 # You may want to give the user the option to guess the whole word when they want, instead of forcing the one-letter-at-a-time approach.
 
-
+##I like the use of "-" to make a break between each section! It helps me stay focused and keep track of what you're talking about
 #-------------------------------------------------------------------------------
 #' Plan
 #' Pull a random word from a text document
@@ -73,7 +77,7 @@
 Jigsaw <- "yes" #initialize the value of Jigsaw when going into the while loop
 
 while (Jigsaw=="yes") { #setup the while loop (1) that will circulate the user for as long as they want to play
-  Jigsaw <- readline(prompt = "Would you like to play a game?\nEnter YES is so, press anything else if not.") #see if the user actually wants to play
+  Jigsaw <- readline(prompt = "Would you like to play a game?\nEnter YES if so, press anything else if not.") #see if the user actually wants to play
   Jigsaw <- tolower(Jigsaw)
   if (Jigsaw=="yes"){ #if the user wants to play then...
     print("Welcome to Hangman. You have 6 lives to try and guess a word. Good luck!")
@@ -94,7 +98,11 @@ while (Jigsaw=="yes") { #setup the while loop (1) that will circulate the user f
         print(paste("You have",lives,"lives left"))
         GuessLetter <- readline("Take a guess as to the secret word, or just guess a letter: ")
         GuessLetter <- tolower(GuessLetter) #set the guessed letter to lowercase to prevent mismatch due to the user simply holding down the shift key
-        
+
+##I tried testing for these conditions (ie. space, nonletter characters and I didn't receive the print statement (ie. "You didn't enter anything. Please enter a letter") 
+##Why didn't it show up? I am genuinely curious why it didn't, I would love to learn more!
+##On the bright side, when I enter a space/nonletter character (invalid character), it didn't take away from my lives so that is great! 
+      
         if (GuessLetter == ''){ #check to see if the user just hit enter
               print("You didn't enter anything. Please enter a letter")
         } else if (!grepl("[A-Za-z]", GuessLetter)){ #make sure that the user is inputting a letter
@@ -106,8 +114,12 @@ while (Jigsaw=="yes") { #setup the while loop (1) that will circulate the user f
                     lives <- lives-1 #since the user failed, remove a life
               }
         } else{ #if they are just trying one letter at a time
+##Can you please explain what the function of gregexpr() does? I am not too familiar with this function.
+##Would the unlist function unlist both the GuessLetter and SecretWord then? 
+##It is really great to learn from your code! I am learning a lot! 
               LetterPosition <- unlist(gregexpr(GuessLetter, SecretWord)) #determine what the position of the letter is in SecretWord, if it is there at all
               if (LetterPosition[1]>0){ #if the letter is actually part of the word then change GuessLetter
+##The stri_sub_all is a cool function from the stringi package! I will definitely save time and use this next time. 
                     stringi::stri_sub_all(GuessWord, from = LetterPosition, length = 1) <- GuessLetter #replace the blank rectangles in the GuessWord with their corresponding letter that the user just correctly guessed
               } else if(grepl(GuessLetter,WrongGuess)){ #is the user repeatedly trying the same letter?
                     print(paste("You already guessed",GuessLetter,", try a different letter"))
@@ -117,8 +129,10 @@ while (Jigsaw=="yes") { #setup the while loop (1) that will circulate the user f
               WrongGuess <- paste(WrongGuess,GuessLetter) #add the wrong guess to the running list of wrong guesses
         }
         }
-        
+##What does the "\014" do in your code and what text does it display?
         cat("\014") 
+
+##The artwork of a hangman is a really great addition to your code!
         #Artwork to be displayed depending on the lives
         if (lives==6){
           cat("
@@ -215,7 +229,7 @@ while (Jigsaw=="yes") { #setup the while loop (1) that will circulate the user f
     } # while loop (2)
     if (SecretWord==GuessWord){
       cat("\014") 
-      
+##This is a nice artwork to have when you got the answer right! He is no longer hanging!
       print(paste("Congratulations! You guessed the word", SecretWord,"!"))
       cat("
     ---------
@@ -259,4 +273,7 @@ while (Jigsaw=="yes") { #setup the while loop (1) that will circulate the user f
     print("Alright, nevermind then...")
   }
 } # while loop (1)
+
+##Overall, I thoroughly enjoyed playing your game and learning new tricks in your code! Just because I am a beginner coder, I would love if your comments explained more about what your code does, 
+##but for someone with a background in R, it is nicely commented. Great job!
 
